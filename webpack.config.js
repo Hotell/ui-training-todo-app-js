@@ -1,39 +1,37 @@
-var path = require('path')
-var webpack = require('webpack')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-
-var rules = [
-  {
-    test: /\.jsx?$/,
-    exclude: /node_modules/,
-    use: {
-      loader: 'babel-loader',
-      options: {
-        presets: ['babel-preset-es2015'],
-        plugins: [],
-      },
-    },
-  },
-]
+const path = require('path')
+const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  devtool: 'source-map',
   entry: path.resolve('src', 'main.js'),
   output: {
     path: path.resolve('build'),
     filename: 'main.js',
   },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  devtool: 'source-map',
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['babel-preset-es2015'],
+            plugins: [],
+          },
+        },
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+      },
+    ],
   },
   plugins: [
-    new HtmlWebpackPlugin({
+    new HTMLWebpackPlugin({
       template: path.resolve('src', 'index.tpl.html'),
       filename: 'index.html',
-      // inject: false,
     }),
   ],
-  module: {
-    rules,
-  },
 }

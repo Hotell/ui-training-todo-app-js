@@ -1,3 +1,4 @@
+import './style.css'
 import { form, handleSubmit } from './todo-app'
 
 const main = () => {
