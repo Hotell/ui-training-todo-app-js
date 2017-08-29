@@ -8,17 +8,16 @@ module.exports = {
     filename: 'main.js',
   },
   devtool: 'source-map',
+  resolve: {
+    extensions: ['.ts', '.js', '.json'],
+  },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(ts|js)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['babel-preset-es2015'],
-            plugins: [],
-          },
+          loader: 'awesome-typescript-loader',
         },
       },
       {
