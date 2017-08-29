@@ -1,4 +1,4 @@
-# WebpackBin project
+# UI-Training - Todo App vol 1. - es2015
 
 ## Start
 
@@ -6,4 +6,4 @@
 
 `npm start`
 
-Go to `localhost:3000`
+Go to `localhost:8080`
