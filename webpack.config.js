@@ -2,7 +2,7 @@ const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: path.resolve('src', 'main.js'),
+  entry: path.resolve('src', 'main.ts'),
   output: {
     path: path.resolve('build'),
     filename: 'main.js',
