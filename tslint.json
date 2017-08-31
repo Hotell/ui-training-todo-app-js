@@ -1,6 +1,6 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint-config-standard"],
+  "extends": ["tslint-config-standard", "tslint-config-prettier"],
   "jsRules": {},
   "rules": {
     "await-promise": true,
