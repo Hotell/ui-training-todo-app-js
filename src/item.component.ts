@@ -19,7 +19,7 @@ template.innerHTML = `
 
 export interface RemoveTodoEvent extends CustomEvent {
   detail: {
-    item: Item
+    item: Todo
   }
 }
 export class Item extends HTMLElement {
@@ -28,6 +28,9 @@ export class Item extends HTMLElement {
     removeItem: 'remove-item',
   }
   private _item: Todo
+  get item() {
+    return this._item
+  }
   set item(val: Todo) {
     this._item = val
     this.itemElement.textContent = val.text
@@ -51,7 +54,7 @@ export class Item extends HTMLElement {
     console.log('Item destroyed!')
   }
   private handleItemRemove(ev: Event) {
-    const removeItemEventConfig = { detail: { item: this }, bubbles: true, composed: true }
+    const removeItemEventConfig = { detail: { item: this._item }, bubbles: true, composed: true }
     this.shadowRoot!.dispatchEvent(new CustomEvent(Item.events.removeItem, removeItemEventConfig))
   }
 }

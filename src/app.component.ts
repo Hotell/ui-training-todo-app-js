@@ -1,5 +1,6 @@
 import { AddTodoEvent, Input } from './input.component'
 import { Item } from './item.component'
+import { Todo } from './models'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -25,6 +26,14 @@ export class App extends HTMLElement {
   private todoList: HTMLUListElement
   private todoInputElement: Input
 
+  private todoItems: Array<Todo> = [
+    { text: 'install NodeJS' },
+    { text: 'create new app' },
+    { text: 'serve app' },
+    { text: 'develop app' },
+    { text: 'deploy app' },
+  ]
+
   constructor() {
     super()
 
@@ -40,21 +49,28 @@ export class App extends HTMLElement {
 
     this.todoInputElement.addEventListener(Input.events.addTodo, this.handleAddTodo.bind(this))
     this.todoList.addEventListener(Item.events.removeItem, this.handleRemoveTodo.bind(this))
+
+    this.todoItems.forEach(({ text }) => this.addItemToList(text))
   }
 
   private addItemToList(text: string) {
-    const li = document.createElement('li')
-
     const todoItem = new Item()
     todoItem.item = { text }
 
+    const li = document.createElement('li')
     li.appendChild(todoItem)
+
     this.todoList.appendChild(li)
   }
 
   private handleRemoveTodo(ev: CustomEvent) {
-    const todoItem = ev.detail.item as Item
-    todoItem.parentNode!.removeChild(todoItem)
+    const todo = ev.detail.item as Todo
+    const todoItemElements = Array.from(this.todoList.querySelectorAll(`li > ${Item.is}`)) as Array<Item>
+    todoItemElements.forEach(todoItem => {
+      if (todoItem.item === todo) {
+        todoItem.parentNode!.removeChild(todoItem)
+      }
+    })
   }
 
   private handleAddTodo(ev: CustomEvent) {
