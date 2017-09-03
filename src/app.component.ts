@@ -1,20 +1,15 @@
 import { AddTodoEvent, Input } from './input.component'
+import { Item } from './item.component'
+
 const template = document.createElement('template')
 template.innerHTML = `
-  <style>
-    .remove-btn {
-      margin-left: auto;
-      border-radius: 5px;
-      background-color: red;
-      color: white;
-    }
+  <style>    
     ul {
       display: flex;
       flex-flow: column;
       padding: 0;
     }
     li {
-      display: flex;
       list-style: none;
     }
   </style>
@@ -23,6 +18,7 @@ template.innerHTML = `
   <ul></ul>
   <footer>&copy; 2017</footer>
 `
+
 export class App extends HTMLElement {
   static is = 'my-app'
 
@@ -45,30 +41,14 @@ export class App extends HTMLElement {
     this.todoInputElement.addEventListener(Input.events.addTodo, this.handleAddTodo.bind(this))
   }
 
-  private createLi(text: string) {
-    const li = document.createElement('li')
-    li.textContent = text
-
-    return li
-  }
-
-  private createButton(listItem: HTMLLIElement) {
-    const btn = document.createElement('button')
-    btn.classList.add('remove-btn')
-    btn.textContent = 'X'
-    btn.addEventListener('click', ev => {
-      listItem.remove()
-    })
-
-    return btn
-  }
-
   private addItemToList(text: string) {
-    const newItem = this.createLi(text)
-    const btn = this.createButton(newItem)
+    const li = document.createElement('li')
 
-    newItem.appendChild(btn)
-    this.todoList.appendChild(newItem)
+    const todoItem = new Item()
+    todoItem.item = { text }
+
+    li.appendChild(todoItem)
+    this.todoList.appendChild(li)
   }
 
   private handleAddTodo(ev: CustomEvent) {

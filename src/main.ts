@@ -5,3 +5,4 @@ import './style.css'
 
 import './app.component'
 import './input.component'
+import './item.component'
