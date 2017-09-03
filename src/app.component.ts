@@ -1,11 +1,7 @@
+import { AddTodoEvent, Input } from './input.component'
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-    .submit-btn {
-      border-radius: 5px;
-      background-color: green;
-      color: white;
-    }
     .remove-btn {
       margin-left: auto;
       border-radius: 5px;
@@ -23,19 +19,15 @@ template.innerHTML = `
     }
   </style>
   <header>Todo App</header>
-  <form>
-    <input/>
-    <button type="submit" class="submit-btn">Add</button>
-  </form>
+  <${Input.is}></${Input.is}>
   <ul></ul>
   <footer>&copy; 2017</footer>
 `
-class App extends HTMLElement {
+export class App extends HTMLElement {
   static is = 'my-app'
 
-  private form: HTMLFormElement
-  private input: HTMLInputElement
   private todoList: HTMLUListElement
+  private todoInputElement: Input
 
   constructor() {
     super()
@@ -43,14 +35,14 @@ class App extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this.form = shadowRoot.querySelector('form') as HTMLFormElement
-    this.input = shadowRoot.querySelector('input') as HTMLInputElement
     this.todoList = shadowRoot.querySelector('ul') as HTMLUListElement
+    this.todoInputElement = shadowRoot.querySelector('my-input') as Input
   }
 
   connectedCallback() {
-    console.log('WORKS!')
-    this.form.addEventListener('submit', ev => this.handleSubmit(ev))
+    console.log('App loaded!')
+
+    this.todoInputElement.addEventListener(Input.events.addTodo, this.handleAddTodo.bind(this))
   }
 
   private createLi(text: string) {
@@ -79,13 +71,10 @@ class App extends HTMLElement {
     this.todoList.appendChild(newItem)
   }
 
-  private handleSubmit(ev: Event) {
-    ev.preventDefault()
-
-    const newValue = this.input.value
-    this.addItemToList(newValue)
-    this.input.value = ''
+  private handleAddTodo(ev: CustomEvent) {
+    const text = ev.detail.todoText
+    this.addItemToList(text)
   }
 }
 
-customElements.define(App.is, App)
+export default customElements.define(App.is, App)
