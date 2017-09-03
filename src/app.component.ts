@@ -39,6 +39,7 @@ export class App extends HTMLElement {
     console.log('App loaded!')
 
     this.todoInputElement.addEventListener(Input.events.addTodo, this.handleAddTodo.bind(this))
+    this.todoList.addEventListener(Item.events.removeItem, this.handleRemoveTodo.bind(this))
   }
 
   private addItemToList(text: string) {
@@ -49,6 +50,11 @@ export class App extends HTMLElement {
 
     li.appendChild(todoItem)
     this.todoList.appendChild(li)
+  }
+
+  private handleRemoveTodo(ev: CustomEvent) {
+    const todoItem = ev.detail.item as Item
+    todoItem.parentNode!.removeChild(todoItem)
   }
 
   private handleAddTodo(ev: CustomEvent) {

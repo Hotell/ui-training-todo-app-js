@@ -17,8 +17,16 @@ template.innerHTML = `
   <button class="remove-btn">remove</button>
 `
 
+export interface RemoveTodoEvent extends CustomEvent {
+  detail: {
+    item: Item
+  }
+}
 export class Item extends HTMLElement {
   static is = 'my-item'
+  static events = {
+    removeItem: 'remove-item',
+  }
   private _item: Todo
   set item(val: Todo) {
     this._item = val
@@ -37,15 +45,14 @@ export class Item extends HTMLElement {
     this.itemElement = shadowRoot.querySelector('.todo-title') as HTMLSpanElement
   }
   connectedCallback() {
-    this.removeButton.addEventListener('click', ev => {
-      this.handleItemRemove(ev)
-    })
+    this.removeButton.addEventListener('click', this.handleItemRemove.bind(this))
+  }
+  disconnectedCallback() {
+    console.log('Item destroyed!')
   }
   private handleItemRemove(ev: Event) {
     const removeItemEventConfig = { detail: { item: this }, bubbles: true, composed: true }
-    this.shadowRoot!.dispatchEvent(new CustomEvent('remove-item', removeItemEventConfig))
-
-    this.remove()
+    this.shadowRoot!.dispatchEvent(new CustomEvent(Item.events.removeItem, removeItemEventConfig))
   }
 }
 
