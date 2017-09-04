@@ -1,5 +1,5 @@
 import { AddTodoEvent, Input } from './input.component'
-import { Item } from './item.component'
+import { ChangeTodoTitleEvent, Item, RemoveTodoEvent } from './item.component'
 import { Todo } from './models'
 
 const template = document.createElement('template')
@@ -79,6 +79,10 @@ export class App extends HTMLElement {
     { text: 'deploy app' },
   ]
 
+  private get allItemElements() {
+    return Array.from(this.todoList.querySelectorAll(`li > ${Item.is}`)) as Array<Item>
+  }
+
   constructor() {
     super()
 
@@ -94,6 +98,7 @@ export class App extends HTMLElement {
 
     this.todoInputElement.addEventListener(Input.events.addTodo, this.handleAddTodo.bind(this))
     this.todoList.addEventListener(Item.events.removeItem, this.handleRemoveTodo.bind(this))
+    this.todoList.addEventListener(Item.events.changeTitle, this.handleChangeTodo.bind(this))
 
     this.todoItems.forEach(todo => this.renderTodoItem(todo))
   }
@@ -108,19 +113,28 @@ export class App extends HTMLElement {
     this.todoList.appendChild(li)
   }
 
-  private handleRemoveTodo(ev: CustomEvent) {
-    const todo = ev.detail.item as Todo
-    const todoItemElements = Array.from(this.todoList.querySelectorAll(`li > ${Item.is}`)) as Array<Item>
+  private handleRemoveTodo(ev: RemoveTodoEvent) {
+    const todo = ev.detail.item
 
-    todoItemElements.forEach((todoItem, idx) => {
+    this.allItemElements.forEach((todoItem, idx) => {
       if (todoItem.item === todo) {
         this.todoList.removeChild(todoItem.parentNode!)
         this.todoItems.splice(idx, 1)
       }
     })
   }
+  private handleChangeTodo(ev: ChangeTodoTitleEvent) {
+    const { newTodo, oldTodo } = ev.detail
 
-  private handleAddTodo(ev: CustomEvent) {
+    this.allItemElements.forEach((todoItem, idx) => {
+      if (todoItem.item === oldTodo) {
+        todoItem.item = newTodo
+        this.todoItems.splice(idx, 1, newTodo)
+      }
+    })
+  }
+
+  private handleAddTodo(ev: AddTodoEvent) {
     const text = ev.detail.todoText
     const newTodo = { text }
     this.todoItems.push(newTodo)

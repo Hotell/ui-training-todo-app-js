@@ -1,6 +1,9 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
+  :host(:not([hidden])){
+    display: inline-block;
+  }
   :host button {
     background-color: lightseagreen;
     color: #fff;

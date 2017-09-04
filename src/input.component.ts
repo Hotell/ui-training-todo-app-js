@@ -1,4 +1,6 @@
 import { Button } from './button.component'
+import { Item } from './item.component'
+
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
@@ -10,6 +12,14 @@ template.innerHTML = `
       justify-content: space-between;
       flex-grow: 1;
     }
+
+    :host-context(my-item) ${Button.is}{
+      display: none
+    }
+    :host-context(my-item) {
+      width: 100%;
+    }
+
     input {
       padding: 4px 10px 4px;
       font-size: 16px;
@@ -36,6 +46,15 @@ export class Input extends HTMLElement {
   static is = 'my-input'
   static events = {
     addTodo: 'add-todo',
+  }
+
+  private _todoText = ''
+  get todoText() {
+    return this._todoText
+  }
+  set todoText(newVal: string) {
+    this._todoText = newVal
+    this.input.value = newVal
   }
 
   private form: HTMLFormElement
