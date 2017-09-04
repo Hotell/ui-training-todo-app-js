@@ -1,6 +1,12 @@
 import { Button } from './button.component'
 import { Item } from './item.component'
 
+export interface AddTodoEvent extends CustomEvent {
+  detail: {
+    todoText: string
+  }
+}
+
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
@@ -36,11 +42,7 @@ template.innerHTML = `
   </form>
 `
 
-export interface AddTodoEvent extends CustomEvent {
-  detail: {
-    todoText: string
-  }
-}
+const ESC_KEY = 27
 
 export class Input extends HTMLElement {
   static is = 'my-input'
@@ -72,7 +74,18 @@ export class Input extends HTMLElement {
 
   connectedCallback() {
     console.log('Input loaded')
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', String(0))
+    }
     this.form.addEventListener('submit', ev => this.handleSubmit(ev))
+    this.input.addEventListener('keyup', ev => {
+      if (ev.which === ESC_KEY) {
+        this.input.blur()
+      }
+    })
+    this.addEventListener('focus', ev => {
+      this.input.focus()
+    })
   }
 
   private handleSubmit(ev: Event) {

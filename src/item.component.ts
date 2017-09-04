@@ -76,6 +76,7 @@ export class Item extends HTMLElement {
     this.itemElement.hidden = true
     this.inputElement.hidden = false
     this.inputElement.todoText = this.item.text
+    this.inputElement.focus()
   }
   private cancelEdit(ev?: Event) {
     this.inputElement.hidden = true
