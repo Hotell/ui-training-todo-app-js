@@ -1,15 +1,32 @@
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
-  .submit-btn {
-    border-radius: 5px;
-    background-color: green;
-    color: white;
-  }
+    :host(:not([hidden])){
+      display: block;
+    }
+    :host form {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+    input {
+      padding: 4px 10px 4px;
+      font-size: 16px;
+      font-family: 'Lucida Grande', Verdana, sans-serif;
+      line-height: 20px;
+      border: solid 1px #dddddd;
+      border-radius: 5px;
+      flex-grow: 1;
+    }
+    .btn {
+      border-radius: 5px;
+      background-color: green;
+      color: white;
+    }
   </style>
   <form>
-    <input/>
-    <button type="submit" class="submit-btn">Add</button>
+    <input type="text"/>
+    <button type="submit" class="btn">Add</button>
   </form>
 `
 

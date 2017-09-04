@@ -4,17 +4,26 @@ const template = document.createElement('template')
 template.innerHTML = `
   <style>
     :host {
-      display: flex
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-top: solid 1px #ddd;
+      min-height: 30px;
+      line-height: 30px;
     }
-    .remove-btn {
-      margin-left: auto;
-      border-radius: 5px;
-      background-color: red;
-      color: white;
+    .todo-title {
+      flex-grow: 1;
+      padding-left: 11px;
+    }
+    .btn {
+      background: red;
+    }
+    .btn:hover {
+      background: darkred;
     }
   </style>
   <span class="todo-title"></span>
-  <button class="remove-btn">remove</button>
+  <button class="btn">remove</button>
 `
 
 export interface RemoveTodoEvent extends CustomEvent {
