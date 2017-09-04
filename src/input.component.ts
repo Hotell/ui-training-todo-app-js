@@ -1,3 +1,4 @@
+import { Button } from './button.component'
 const template = document.createElement('template')
 template.innerHTML = `
   <style>
@@ -18,15 +19,10 @@ template.innerHTML = `
       border-radius: 5px;
       flex-grow: 1;
     }
-    .btn {
-      border-radius: 5px;
-      background-color: green;
-      color: white;
-    }
   </style>
   <form>
     <input type="text"/>
-    <button type="submit" class="btn">Add</button>
+    <${Button.is} type="submit">Add</${Button.is}>
   </form>
 `
 

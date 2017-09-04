@@ -50,6 +50,12 @@ template.innerHTML = `
       text-align: center;
       letter-spacing: -0.8px;
     }
+    ol,
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
     ${Input.is} {
       margin-bottom: 20px;
     }

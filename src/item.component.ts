@@ -1,3 +1,4 @@
+import { Button } from './button.component'
 import { Todo } from './models'
 
 const template = document.createElement('template')
@@ -15,15 +16,9 @@ template.innerHTML = `
       flex-grow: 1;
       padding-left: 11px;
     }
-    .btn {
-      background: red;
-    }
-    .btn:hover {
-      background: darkred;
-    }
   </style>
   <span class="todo-title"></span>
-  <button class="btn">remove</button>
+  <${Button.is} class="danger">remove</${Button.is}>
 `
 
 export interface RemoveTodoEvent extends CustomEvent {
@@ -45,7 +40,7 @@ export class Item extends HTMLElement {
     this.itemElement.textContent = val.text
   }
 
-  private removeButton: HTMLButtonElement
+  private removeButton: Button
   private itemElement: HTMLSpanElement
   constructor() {
     super()
@@ -53,7 +48,7 @@ export class Item extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this.removeButton = shadowRoot.querySelector('button') as HTMLButtonElement
+    this.removeButton = shadowRoot.querySelector(Button.is) as Button
     this.itemElement = shadowRoot.querySelector('.todo-title') as HTMLSpanElement
   }
   connectedCallback() {
